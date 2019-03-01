@@ -23,6 +23,12 @@
         video.srcObject = stream;
         video.play();
       });
+  } else {
+    window.alert('your browser does not support camera or you did not grant access')
+      ga('send', 'exception', {
+        'exDescription': 'no camera',
+        'exFatal': false
+      });
   }
 
   video.addEventListener( "loadedmetadata", function (e) {
