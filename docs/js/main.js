@@ -21,11 +21,13 @@
         video.srcObject = stream;
         video.play();
       });
+  }
 
+  video.addEventListener( "loadedmetadata", function (e) {
     const originalDisplayHeight = $(video).height();
     const originalDisplayWidth = $(video).width();
-
     if (video.videoWidth > video.videoHeight) {
+      console.log('wide')
       const newWidth = originalDisplayHeight / 0.68;
       const offset = originalDisplayWidth - newWidth;
       $("#videoDiv")[0].style.width = newWidth + "px";
@@ -38,7 +40,7 @@
       $("#videoDiv")[0].style.width = originalDisplayWidth + "px";
       video.style.marginTop = -offset / 2 + "px";
     }
-  }
+  })
 
   const placeholder_mappings = {
     "I think you should travel to": "... ",
@@ -239,4 +241,6 @@
   $(".afterTaken").hide();
   $('.beforeSubmit').show();
   $('.afterSubmit').hide();
+
+
 })(jQuery);
