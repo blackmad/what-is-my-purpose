@@ -358,6 +358,10 @@ textarea.input100 {
   .wrap-contact100 {
     padding: 20px 15px 65px 15px;
   }
+
+  #video {
+    width: 400px !important;
+  }
 }
 
 

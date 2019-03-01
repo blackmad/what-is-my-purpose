@@ -22,22 +22,22 @@
         video.play();
       });
 
-    // const originalDisplayHeight = $(video).height();
-    // const originalDisplayWidth = $(video).width();
+    const originalDisplayHeight = $(video).height();
+    const originalDisplayWidth = $(video).width();
 
-    // if (originalDisplayWidth > originalDisplayHeight) {
-    //   const newWidth = originalDisplayHeight / 0.68;
-    //   const offset = originalDisplayWidth - newWidth;
-    //   $("#videoDiv")[0].style.width = newWidth + "px";
-    //   $("#videoDiv")[0].style.height = originalDisplayHeight + "px";
-    //   video.style.marginLeft = -offset / 2 + "px";
-    // } else {
-    //   const newHeight = originalDisplayWidth / 0.68;
-    //   const offset = originalDisplayHeight - newWidth;
-    //   $("#videoDiv")[0].style.height = newHeight + "px";
-    //   $("#videoDiv")[0].style.width = originalDisplayWidth + "px";
-    //   video.style.marginTop = -offset / 2 + "px";
-    // }
+    if (originalDisplayWidth > originalDisplayHeight) {
+      const newWidth = originalDisplayHeight / 0.68;
+      const offset = originalDisplayWidth - newWidth;
+      $("#videoDiv")[0].style.width = newWidth + "px";
+      $("#videoDiv")[0].style.height = originalDisplayHeight + "px";
+      video.style.marginLeft = -offset / 2 + "px";
+    } else {
+      const newHeight = originalDisplayWidth / 0.68;
+      const offset = originalDisplayHeight - newWidth;
+      $("#videoDiv")[0].style.height = newHeight + "px";
+      $("#videoDiv")[0].style.width = originalDisplayWidth + "px";
+      video.style.marginTop = -offset / 2 + "px";
+    }
   }
 
   const placeholder_mappings = {
