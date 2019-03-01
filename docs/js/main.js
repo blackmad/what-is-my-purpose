@@ -130,7 +130,7 @@ function selectRandomOption(selector) {
       check = false;
     }
 
-    if ($(message).val().length > 70) {
+    if ($(message).val().length > 700) {
       showValidate(message);
       check = false;
     }
