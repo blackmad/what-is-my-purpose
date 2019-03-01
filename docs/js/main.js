@@ -219,24 +219,25 @@
         canvas.width,
         canvas.height
       ); // With as width / height: 160 * 60 (scale)
+      console.log('cropped wide image')
     } else {
       const height = video.videoWidth / 0.68;
       const offset = video.videoHeight - height;
       canvas.height = height * 2;
       canvas.width = video.videoWidth * 2;
 
-
       canvas.getContext("2d").drawImage(
         video,
         0, // Start at 10 pixels from the left and the top of the image (crop),
         offset / 2, // crop/offset
-        width, // "Get" a (w * h) area from the source image (crop),
-        video.videoHeight, // area
+        video.videoWidth, // "Get" a (w * h) area from the source image (crop),
+        height, // area
         0, // Place the result at 0, 0 in the canvas,
         0,
         canvas.width,
         canvas.height
       ); // With as width / height: 160 * 60 (scale)
+      console.log('cropped portrait image')
     }
 
     var image = document.getElementById("myImage");
