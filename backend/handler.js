@@ -76,8 +76,8 @@ module.exports.sendCard = (event, context, callback) => {
     });
   }
 
-  var image_data_parts = params.image_data.split('base64,')
-  var mime_type = image_data_parts.split(':')[1]
+  var image_data_parts = params.image_data.split(';base64,')
+  var mime_type = image_data_parts[0].split(':')[1]
   var extension = mime_type.split('/')[1]
   key += '.' + extension
   var decoded_image_data = new Buffer(image_data_parts[1], 'base64')

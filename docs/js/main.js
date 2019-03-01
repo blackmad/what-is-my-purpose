@@ -187,7 +187,6 @@ function selectRandomOption(selector) {
       function error_callback(data, textStatus, errorThrown) {
         $('.beforeResponse').hide();
         $('.afterResponse.error').show()
-        debugger;
         if (data.responseJSON) {
           $("#error").html(data.responseJSON.err._response.body.error.message);
         } else {
@@ -262,7 +261,7 @@ function selectRandomOption(selector) {
 
       var scaleFactor = 1
       if (width < 1875) {
-        scaleFactor = 1875 / width;
+        scaleFactor = (1875 / width)*1.02
         console.log('scaling widescreen image')
       }
 
@@ -285,9 +284,10 @@ function selectRandomOption(selector) {
       const height = Math.ceil(video.videoWidth / 0.68);
       const offset = video.videoHeight - height;
 
+      console.log(`video res: ${video.videoWidth} x ${video.videoHeight}`);
       var scaleFactor = 1
       if (height < 1875) {
-        scaleFactor = 1875 / height;
+        scaleFactor = (1875 / height)*1.02;
         console.log('scaling portrait image')
       }
 
