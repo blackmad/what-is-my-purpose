@@ -201,7 +201,9 @@ function selectRandomOption(selector) {
     $('.whileTaking').show();
 
     var canvas = document.createElement("canvas")
+    var offscreenCanvas = false;
     if (canvas.transferControlToOffscreen != null) {
+      offscreenCanvas = true;
       canvas = canvas.transferControlToOffscreen();
     }
 
@@ -257,7 +259,7 @@ function selectRandomOption(selector) {
       $(".afterTaken").show();
     }
 
-    if (canvas.transferControlToOffscreen != null) {
+    if (offscreenCanvas) {
       canvas.convertToBlob({  type: "image/png" }).then(function(blob) {
         blobToDataURL(blob, setImageDataUrl)
       })
