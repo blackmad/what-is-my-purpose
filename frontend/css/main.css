@@ -169,7 +169,7 @@ iframe {
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
-  padding: 42px 55px 45px 55px;
+  padding: 42px 55px 15px 55px;
 }
 
 
@@ -598,4 +598,10 @@ textarea.input100 {
 
 .retake-button-div {
   width: 60% !important;
+}
+
+.inspired, a {
+  font-size: 10pt;
+  text-align: end;
+  margin-top: 30px;
 }
