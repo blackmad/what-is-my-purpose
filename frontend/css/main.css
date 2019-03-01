@@ -588,6 +588,14 @@ textarea.input100 {
   display:none;
 }
 
+.afterResponse {
+  width: 300px;
+}
+
+.thank-you {
+  text-align: end;
+}
+
 .retake-button-div {
-  width: 60%;
+  width: 60% !important;
 }

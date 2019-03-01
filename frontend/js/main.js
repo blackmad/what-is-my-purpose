@@ -48,6 +48,7 @@
       "... about computers talking to people",
     "I want you to know that": "... none of this matters",
     "I think your work is": "... a start",
+    "I think your work is about": "... to go off",
     "I want to help you": "... cook senegalese food",
     "I need": "... advice on how to pet cats good"
   };
