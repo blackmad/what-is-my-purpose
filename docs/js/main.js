@@ -210,23 +210,33 @@
 
       canvas.getContext("2d").drawImage(
         video,
-        offset / 2,
+        offset / 2, // crop/offset
         0, // Start at 10 pixels from the left and the top of the image (crop),
-        width,
-        video.videoHeight, // "Get" a (w * h) area from the source image (crop),
+        width, // "Get" a (w * h) area from the source image (crop),
+        video.videoHeight, // area
         0,
         0, // Place the result at 0, 0 in the canvas,
-        width * 2,
-        video.videoHeight * 2
+        canvas.width,
+        canvas.height
       ); // With as width / height: 160 * 60 (scale)
     } else {
       const height = video.videoWidth / 0.68;
       const offset = video.videoHeight - height;
       canvas.height = height * 2;
       canvas.width = video.videoWidth * 2;
-      canvas
-        .getContext("2d")
-        .drawImage(video, 0, -offset, video.videoHeight * 2, height * 2);
+
+
+      canvas.getContext("2d").drawImage(
+        video,
+        0, // Start at 10 pixels from the left and the top of the image (crop),
+        offset / 2, // crop/offset
+        width, // "Get" a (w * h) area from the source image (crop),
+        video.videoHeight, // area
+        0, // Place the result at 0, 0 in the canvas,
+        0,
+        canvas.width,
+        canvas.height
+      ); // With as width / height: 160 * 60 (scale)
     }
 
     var image = document.getElementById("myImage");
