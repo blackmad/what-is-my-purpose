@@ -87,7 +87,9 @@ module.exports.sendCard = (event, context, callback) => {
     Key: key,
     Body: decoded_image_data,
     ContentType: mime_type
-  }).promise().then(uploadCard)
+  }).promise()
+    .then(uploadCard)
+    .catch((error) => sendResponse(error, {}))
 
 };
 
