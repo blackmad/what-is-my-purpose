@@ -33,7 +33,7 @@
       video.style.marginLeft = -offset / 2 + "px";
     } else {
       const newHeight = originalDisplayWidth / 0.68;
-      const offset = originalDisplayHeight - newWidth;
+      const offset = originalDisplayHeight - newHeight;
       $("#videoDiv")[0].style.height = newHeight + "px";
       $("#videoDiv")[0].style.width = originalDisplayWidth + "px";
       video.style.marginTop = -offset / 2 + "px";
