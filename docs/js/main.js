@@ -25,10 +25,10 @@
       });
   } else {
     window.alert('your browser does not support camera or you did not grant access')
-      ga('send', 'exception', {
-        'exDescription': 'no camera',
-        'exFatal': false
-      });
+    ga('send', 'exception', {
+      'exDescription': 'no camera',
+      'exFatal': false
+    });
   }
 
   video.addEventListener( "loadedmetadata", function (e) {
@@ -151,10 +151,15 @@ function selectRandomOption(selector) {
         $("#expectedDate").html(data.res.expected_delivery_date);
       }
 
-      function error_callback(data) {
+      function error_callback(data, textStatus, errorThrown) {
         $('.beforeResponse').hide();
         $('.afterResponse.error').show()
-        $("#error").html(data.responseJSON.err._response.body.error.message);
+        debugger;
+        if (data.responseJSON) {
+          $("#error").html(data.responseJSON.err._response.body.error.message);
+        } else {
+          $("#error").html(`${textStatus}: ${errorThrown || '???'}`)
+        }
       }
 
       const postUrl = isDev ?

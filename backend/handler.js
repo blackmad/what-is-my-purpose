@@ -1,5 +1,8 @@
 'use strict';
 
+const Raven = require("raven"); // Official `raven` module
+const RavenLambdaWrapper = require("serverless-sentry-lib"); // This helper library
+
 const fetch = require('node-fetch');
 const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-dependencies
 
@@ -16,6 +19,26 @@ module.exports.sendCard = (event, context, callback) => {
   const querystring = require('querystring');
   const params = querystring.parse(event.body)
   const key = randomString() + '.png';
+
+  function sendResponse(err, res) {
+     var statusCode = 200;
+      if (err != null) {
+        statusCode = 500;
+      }
+
+      const response = {
+        statusCode: statusCode,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
+        body: JSON.stringify({
+          err: err,
+          res: res
+        }),
+      };
+      callback(null, response);
+  }
 
   function uploadCard() {
     const front = 'https://s3.amazonaws.com/purpose-store/' + key;
@@ -49,23 +72,7 @@ module.exports.sendCard = (event, context, callback) => {
 
       }
     }, function (err, res) {
-      var statusCode = 200;
-      if (err != null) {
-        statusCode = 500;
-      }
-
-      const response = {
-        statusCode: statusCode,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-        },
-        body: JSON.stringify({
-          err: err,
-          res: res
-        }),
-      };
-      callback(null, response);
+      sendResponse(err, res)
     });
   }
 

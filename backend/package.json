@@ -7,9 +7,12 @@
   "dependencies": {
     "aws-sdk": "^2.7.9",
     "lob": "^6.0.5",
-    "node-fetch": "^1.6.3"
+    "node-fetch": "^1.6.3",
+    "raven": "^2.6.4",
+    "serverless-sentry-lib": "^1.1.2"
   },
   "devDependencies": {
-    "serverless-offline": "^4.7.1"
+    "serverless-offline": "^4.7.1",
+    "serverless-sentry": "^1.2.0"
   }
 }
