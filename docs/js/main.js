@@ -28,7 +28,8 @@
         .then(function(stream) {
           video.srcObject = stream;
           video.play();
-        });
+        })
+        .catch((e) => setUseMedia())
       } catch (err) {
         setUseMedia()
       }
