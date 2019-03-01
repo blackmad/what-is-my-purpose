@@ -67,6 +67,12 @@ function selectRandomOption(selector) {
   selectRandomOption('#greeting')
   selectRandomOption('#closing')
 
+    $(".selection-2").select2({
+      minimumResultsForSearch: 20,
+      dropdownParent: $('#dropDownSelect1')
+    });
+
+
 
   $("#opening").on("change", set_placeholder);
   set_placeholder();
