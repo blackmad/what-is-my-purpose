@@ -211,7 +211,7 @@
     const canvas = document.createElement("canvas").transferControlToOffscreen();
 
     if (video.videoWidth > video.videoHeight) {
-      const width = Math.floor(video.videoHeight / 0.68);
+      const width = Math.ceil(video.videoHeight / 0.68);
       const offset = video.videoWidth - width;
       canvas.width = width * 2;
       canvas.height = video.videoHeight * 2;
@@ -229,7 +229,7 @@
       ); // With as width / height: 160 * 60 (scale)
       console.log('cropped wide image')
     } else {
-      const height = Math.floor(video.videoWidth / 0.68);
+      const height = Math.ceil(video.videoWidth / 0.68);
       const offset = video.videoHeight - height;
       canvas.height = height * 2;
       canvas.width = video.videoWidth * 2;
