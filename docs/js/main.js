@@ -54,12 +54,19 @@
     );
   }
 
-  var options = $("#opening > option");
+function selectRandomOption(selector) {
+  var options = $(`${selector} > option`);
   var random = Math.floor(options.length * (Math.random() % 1));
-  $("#opening > option")
+  $(`${selector} > option`)
     .attr("selected", false)
     .eq(random)
     .attr("selected", true);
+  }
+
+  selectRandomOption('#opening')
+  selectRandomOption('#greeting')
+  selectRandomOption('#closing')
+
 
   $("#opening").on("change", set_placeholder);
   set_placeholder();
