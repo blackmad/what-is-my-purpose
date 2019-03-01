@@ -265,9 +265,13 @@
       $(".afterTaken").show();
     }
 
-    canvas.convertToBlob({  type: "image/png" }).then(function(blob) {
-      blobToDataURL(blob, setImageDataUrl)
-    })
+    if (canvas.transferControlToOffscreen != null) {
+      canvas.convertToBlob({  type: "image/png" }).then(function(blob) {
+        blobToDataURL(blob, setImageDataUrl)
+      })
+    } else {
+      setImageDataUrl(canvas.toDataURL('image/png'));
+    }
   });
 
   document.getElementById("retake").addEventListener("click", function() {
