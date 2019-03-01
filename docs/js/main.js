@@ -57,10 +57,8 @@
 function selectRandomOption(selector) {
   var options = $(`${selector} > option`);
   var random = Math.floor(options.length * (Math.random() % 1));
-  $(`${selector} > option`)
-    .attr("selected", false)
-    .eq(random)
-    .attr("selected", true);
+  console.log(options[random].text);
+  $(selector).val(options[random].text)
   }
 
   selectRandomOption('#opening')
