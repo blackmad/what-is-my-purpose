@@ -208,7 +208,10 @@
     $(".beforeTaken").hide();
     $('.whileTaking').show();
 
-    const canvas = document.createElement("canvas").transferControlToOffscreen();
+    var canvas = document.createElement("canvas")
+    if (canvas.transferControlToOffscreen != null) {
+      canvas = canvas.transferControlToOffscreen();
+    }
 
     if (video.videoWidth > video.videoHeight) {
       const width = Math.ceil(video.videoHeight / 0.68);
