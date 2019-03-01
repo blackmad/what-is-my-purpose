@@ -1,0 +1,49 @@
+# Welcome to serverless. Read the docs
+# https://serverless.com/framework/docs/
+
+# Serverless.yml is the configuration the CLI
+# uses to deploy your code to your provider of choice
+
+# The `service` block is the name of the service
+service: serverless-hello-world
+
+plugins:
+  - serverless-offline
+
+custom:
+  bucket: purpose-store
+
+# The `provider` block defines where your service will be deployed
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    LOB_API_KEY: ${file(../../../.auth/lob.json):${self:provider.stage}.key}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+      Resource: "arn:aws:s3:::${self:custom.bucket}/*"
+
+# The `functions` block defines what code to deploy
+functions:
+
+  helloWorld:
+    handler: handler.helloWorld
+    events:
+      - http:
+          path: hello-world
+          method: get
+          cors: true
+
+  sendCard:
+    handler: handler.sendCard
+    environment:
+      BUCKET: ${self:custom.bucket}
+    events:
+      - http:
+          path: sendCard
+          method: post
+          cors: true
