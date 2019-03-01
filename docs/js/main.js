@@ -1,6 +1,8 @@
 (function($) {
   "use strict";
 
+  const isDev = (window.location.search == '?dev');
+
   /* set up video */
   // Grab elements, create settings, etc.
   var video = document.getElementById("video");
@@ -153,10 +155,13 @@
         $("#error").html(data.responseJSON.err._response.body.error.message);
       }
 
+      const postUrl = isDev ?
+        "https://jjt53ry4fg.execute-api.us-east-1.amazonaws.com/dev/sendCard" :
+        "https://rmzrok1de3.execute-api.us-east-1.amazonaws.com/prod/sendCard";
+
       $.ajax({
         type: "POST",
-        url:
-          "https://rmzrok1de3.execute-api.us-east-1.amazonaws.com/prod/sendCard",
+        url: postUrl,
         dataType: "json",
         crossDomain: true,
         data: {
@@ -200,15 +205,18 @@
 
   // Trigger photo take
   document.getElementById("snap").addEventListener("click", function() {
-    const canvas = document.createElement("canvas");
+    $(".beforeTaken").hide();
+    $('.whileTaking').show();
+
+    const canvas = document.createElement("canvas").transferControlToOffscreen();
 
     if (video.videoWidth > video.videoHeight) {
-      const width = video.videoHeight / 0.68;
+      const width = Math.floor(video.videoHeight / 0.68);
       const offset = video.videoWidth - width;
       canvas.width = width * 2;
       canvas.height = video.videoHeight * 2;
 
-      canvas.getContext("2d").drawImage(
+      canvas.getContext("2d", { alpha: false }).drawImage(
         video,
         offset / 2, // crop/offset
         0, // Start at 10 pixels from the left and the top of the image (crop),
@@ -221,12 +229,12 @@
       ); // With as width / height: 160 * 60 (scale)
       console.log('cropped wide image')
     } else {
-      const height = video.videoWidth / 0.68;
+      const height = Math.floor(video.videoWidth / 0.68);
       const offset = video.videoHeight - height;
       canvas.height = height * 2;
       canvas.width = video.videoWidth * 2;
 
-      canvas.getContext("2d").drawImage(
+      canvas.getContext("2d", { alpha: false }).drawImage(
         video,
         0, // Start at 10 pixels from the left and the top of the image (crop),
         offset / 2, // crop/offset
@@ -241,10 +249,22 @@
     }
 
     var image = document.getElementById("myImage");
-    image.src = canvas.toDataURL("image/png");
 
-    $(".afterTaken").show();
-    $(".beforeTaken").hide();
+    function blobToDataURL(blob, callback) {
+      var a = new FileReader();
+      a.onload = function(e) {callback(e.target.result);}
+      a.readAsDataURL(blob);
+    }
+
+    function setImageDataUrl(dataUrl) {
+      image.src = dataUrl;
+      $('.whileTaking').hide();
+      $(".afterTaken").show();
+    }
+
+    canvas.convertToBlob({  type: "image/png" }).then(function(blob) {
+      blobToDataURL(blob, setImageDataUrl)
+    })
   });
 
   document.getElementById("retake").addEventListener("click", function() {
