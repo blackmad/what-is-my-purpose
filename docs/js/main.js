@@ -41,8 +41,8 @@
   }
 
   const placeholder_mappings = {
-    "I think you should travel to": "... a beautiful place out in the country",
-    "I think you should meet": "... the right people",
+    "I think you should travel to": "... ",
+    "I think you should meet": "... ",
     "I think you could": "... take up salsa dancing",
     "I think your creative practice is":
       "... about computers talking to people",
@@ -151,7 +151,7 @@
       $.ajax({
         type: "POST",
         url:
-          "https://jjt53ry4fg.execute-api.us-east-1.amazonaws.com/dev/sendCard",
+          "https://rmzrok1de3.execute-api.us-east-1.amazonaws.com/prod/sendCard",
         dataType: "json",
         crossDomain: true,
         data: {
