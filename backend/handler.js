@@ -21,6 +21,12 @@ module.exports.sendCard = (event, context, callback) => {
     const front = 'https://s3.amazonaws.com/purpose-store/' + key;
     console.log(front);
 
+    var back = 'tmpl_f0fafc696ebcbc9';
+    console.log(process.env.ENV)
+    if (process.env.ENV == 'prod') {
+      back = 'tmpl_ce36d157166293d';
+    }
+
     Lob.postcards.create({
       description: 'Demo Postcard job',
       to: {
@@ -32,7 +38,7 @@ module.exports.sendCard = (event, context, callback) => {
         address_zip: '11206'
       },
       from: null,
-      back: 'tmpl_f0fafc696ebcbc9',
+      back: back,
       front: front,
       merge_variables: {
         greeting: params.greeting,
@@ -43,7 +49,23 @@ module.exports.sendCard = (event, context, callback) => {
 
       }
     }, function (err, res) {
-      console.log(err, res);
+      var statusCode = 200;
+      if (err != null) {
+        statusCode = 500;
+      }
+
+      const response = {
+        statusCode: statusCode,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
+        body: JSON.stringify({
+          err: err,
+          res: res
+        }),
+      };
+      callback(null, response);
     });
   }
 
@@ -56,17 +78,6 @@ module.exports.sendCard = (event, context, callback) => {
     ContentType: 'image/png'
   }).promise().then(uploadCard)
 
-  const response = {
-    statusCode: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
-    },
-    body: JSON.stringify({
-      product: 'hi'
-    }),
-  };
-  callback(null, response);
 };
 
 module.exports.helloWorld = (event, context, callback) => {

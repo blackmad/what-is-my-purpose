@@ -42,6 +42,7 @@ functions:
     handler: handler.sendCard
     environment:
       BUCKET: ${self:custom.bucket}
+      ENV: ${opt:stage, 'dev'}
     events:
       - http:
           path: sendCard
