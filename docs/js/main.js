@@ -34,11 +34,14 @@
       $("#videoDiv")[0].style.height = originalDisplayHeight + "px";
       video.style.marginLeft = -offset / 2 + "px";
     } else {
+      console.log('tall')
+      console.log(`originalDisplayWidth: ${originalDisplayWidth}, originalDisplayHeight: ${originalDisplayHeight}`)
       const newHeight = originalDisplayWidth / 0.68;
       const offset = originalDisplayHeight - newHeight;
+      console.log(`newHeight: ${newHeight}, offset: ${offset}`)
       $("#videoDiv")[0].style.height = newHeight + "px";
       $("#videoDiv")[0].style.width = originalDisplayWidth + "px";
-      video.style.marginTop = -offset / 2 + "px";
+      video.style.marginTop = offset / 2 + "px";
     }
   })
 
