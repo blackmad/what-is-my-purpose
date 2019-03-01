@@ -47,21 +47,6 @@
     }
   })
 
-  const placeholder_mappings = {
-    "I think you should travel to": "... ",
-    "I think you should meet": "... ",
-    "I think you could": "... take up salsa dancing",
-    "I think your creative practice is":
-      "... about computers talking to people",
-    "I want you to know that": "... none of this matters",
-    "I think your work is": "... a start",
-    "I think your work is about": "... to go off",
-    "I want to help you": "... cook senegalese food",
-    "I need": "... advice on how to pet cats good",
-    "I want to introduce you to": "... a nice jewish girl",
-    'What if you': '... '
-  };
-
   function set_placeholder() {
     $("#message").attr(
       "placeholder",
