@@ -25,7 +25,7 @@
     const originalDisplayHeight = $(video).height();
     const originalDisplayWidth = $(video).width();
 
-    if (originalDisplayWidth > originalDisplayHeight) {
+    if (video.videoWidth > video.videoHeight) {
       const newWidth = originalDisplayHeight / 0.68;
       const offset = originalDisplayWidth - newWidth;
       $("#videoDiv")[0].style.width = newWidth + "px";
