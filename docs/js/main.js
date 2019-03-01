@@ -41,7 +41,7 @@
       console.log(`newHeight: ${newHeight}, offset: ${offset}`)
       $("#videoDiv")[0].style.height = newHeight + "px";
       $("#videoDiv")[0].style.width = originalDisplayWidth + "px";
-      video.style.marginTop = offset / 2 + "px";
+      video.style.marginTop = -offset / 2 + "px";
     }
   })
 
