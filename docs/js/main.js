@@ -20,8 +20,8 @@
       navigator.mediaDevices
         .getUserMedia({
           video: {
-            width: { min: 900, ideal: 1280, max: 1920 },
-            height: { min: 700, ideal: 720, max: 1080 },
+            width: { min: 900, ideal: 1275 },
+            height: { min: 700, ideal: 1875 },
             aspectRatio: 4.0 / 6
           }
         })
