@@ -18,7 +18,7 @@ var Lob = require('lob')(process.env.LOB_API_KEY);
 module.exports.sendCard = (event, context, callback) => {
   const querystring = require('querystring');
   const params = querystring.parse(event.body)
-  const key = randomString() + '.png';
+  var key = randomString();
 
   function sendResponse(err, res) {
      var statusCode = 200;
@@ -76,13 +76,17 @@ module.exports.sendCard = (event, context, callback) => {
     });
   }
 
-  var decoded_image_data = new Buffer(params.image_data.split('base64,')[1], 'base64')
+  var image_data_parts = params.image_data.split('base64,')
+  var mime_type = image_data_parts.split(':')[1]
+  var extension = mime_type.split('/')[1]
+  key += '.' + extension
+  var decoded_image_data = new Buffer(image_data_parts[1], 'base64')
 
   s3.putObject({
     Bucket: process.env.BUCKET,
     Key: key,
     Body: decoded_image_data,
-    ContentType: 'image/png'
+    ContentType: mime_type
   }).promise().then(uploadCard)
 
 };

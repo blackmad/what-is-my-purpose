@@ -588,7 +588,7 @@ textarea.input100 {
   margin-bottom: 15px;
 }
 
-.beforeResponse, .afterResponse, .afterSubmit, .whileTaking {
+.beforeResponse, .afterResponse, .afterSubmit, .whileTaking, .mediaStuff, .afterUpload {
   display:none;
 }
 

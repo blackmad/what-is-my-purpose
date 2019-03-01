@@ -6,29 +6,34 @@
   /* set up video */
   // Grab elements, create settings, etc.
   var video = document.getElementById("video");
+  var useMedia = false;
+
+  function setUseMedia() {
+    useMedia = true;
+    $('.cameraStuff').hide();
+    $('.mediaStuff').show();
+  }
 
   // Get access to the camera!
   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    // Not adding `{ audio: true }` since we only want video now
-    navigator.mediaDevices
-      .getUserMedia({
-        video: {
-          width: { min: 900, ideal: 1280, max: 1920 },
-          height: { min: 700, ideal: 720, max: 1080 },
-          aspectRatio: 4.0 / 6
-        }
-      })
-      .then(function(stream) {
-        //video.src = window.URL.createObjectURL(stream);
-        video.srcObject = stream;
-        video.play();
-      });
+    try {
+      navigator.mediaDevices
+        .getUserMedia({
+          video: {
+            width: { min: 900, ideal: 1280, max: 1920 },
+            height: { min: 700, ideal: 720, max: 1080 },
+            aspectRatio: 4.0 / 6
+          }
+        })
+        .then(function(stream) {
+          video.srcObject = stream;
+          video.play();
+        });
+      } catch (err) {
+        setUseMedia()
+      }
   } else {
-    window.alert('your browser does not support camera or you did not grant access')
-    ga('send', 'exception', {
-      'exDescription': 'no camera',
-      'exFatal': false
-    });
+    setUseMedia();
   }
 
   video.addEventListener( "loadedmetadata", function (e) {
@@ -77,9 +82,36 @@ function selectRandomOption(selector) {
     });
 
 
-
   $("#opening").on("change", set_placeholder);
   set_placeholder();
+
+  // deal with media
+
+  function upload_file() {
+    console.log('upload file')
+    function getBase64(file) {
+      console.log('get base 64')
+       var reader = new FileReader();
+       reader.readAsDataURL(file);
+       reader.onload = function () {
+          var image = document.getElementById("myImage");
+          image.src = reader.result;
+          $('.whileTaking').hide();
+          $('.afterUpload').show();
+       };
+       reader.onerror = function (error) {
+         console.log('Error: ', error);
+       };
+    }
+
+    $(".beforeTaken").hide();
+    $('.whileTaking').show();
+    var file = document.querySelector('#uploadFileInput').files[0];
+    getBase64(file); // prints the base64 string
+  }
+  $('#uploadFileInput').change(upload_file)
+  $('div#uploadFile').click((e) => $('uploadFileInput').trigger())
+
 
   /*==================================================================
     [ Focus Contact2 ]*/
@@ -223,10 +255,18 @@ function selectRandomOption(selector) {
     }
 
     if (video.videoWidth > video.videoHeight) {
+      // widescreen
       const width = Math.ceil(video.videoHeight / 0.68);
       const offset = video.videoWidth - width;
-      canvas.width = width * 2;
-      canvas.height = video.videoHeight * 2;
+
+      var scaleFactor = 1
+      if (width < 1875) {
+        scaleFactor = 1875 / width;
+        console.log('scaling widescreen image')
+      }
+
+      canvas.width = width * scaleFactor;
+      canvas.height = video.videoHeight * scaleFactor;
 
       canvas.getContext("2d", { alpha: false }).drawImage(
         video,
@@ -243,8 +283,15 @@ function selectRandomOption(selector) {
     } else {
       const height = Math.ceil(video.videoWidth / 0.68);
       const offset = video.videoHeight - height;
-      canvas.height = height * 2;
-      canvas.width = video.videoWidth * 2;
+
+      var scaleFactor = 1
+      if (height < 1875) {
+        scaleFactor = 1875 / height;
+        console.log('scaling portrait image')
+      }
+
+      canvas.height = height * scaleFactor;
+      canvas.width = video.videoWidth * scaleFactor;
 
       canvas.getContext("2d", { alpha: false }).drawImage(
         video,
@@ -275,17 +322,22 @@ function selectRandomOption(selector) {
     }
 
     if (offscreenCanvas) {
-      canvas.convertToBlob({  type: "image/png" }).then(function(blob) {
+      canvas.convertToBlob({  type: "image/jpeg" }).then(function(blob) {
         blobToDataURL(blob, setImageDataUrl)
       })
     } else {
-      setImageDataUrl(canvas.toDataURL('image/png'));
+      setImageDataUrl(canvas.toDataURL('image/jpeg'));
     }
   });
 
   document.getElementById("retake").addEventListener("click", function() {
     $(".afterTaken").hide();
     $(".beforeTaken").show();
+  });
+
+  document.getElementById("reupload").addEventListener("click", function() {
+    $(".afterUpload").hide();
+    $(".beforeTaken.mediaStuff").show();
   });
 
   $(".afterTaken").hide();
