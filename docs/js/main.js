@@ -1,11 +1,24 @@
 (function($) {
   "use strict";
 
+  function parseQuery(queryString) {
+    var query = {};
+    var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
+    for (var i = 0; i < pairs.length; i++) {
+        var pair = pairs[i].split('=');
+        query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+    }
+    return query;
+  }
+
+  const query = parseQuery(window.location.search);
+  console.log(query);
+
   // GLOBAL VARS
 
-  const isDev = (window.location.search == '?dev');
+  const isDev = query['dev'] != null;
   if (isDev) {
-    $('.devMode').show()
+    $('.devMode').show();
   }
 
   var video = document.getElementById("video");
@@ -22,7 +35,7 @@
 
     // Get access to the camera!
     try {
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && query['file'] == null) {
         navigator.mediaDevices
           .getUserMedia({
             video: {
