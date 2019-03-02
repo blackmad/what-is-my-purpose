@@ -4,6 +4,9 @@
   // GLOBAL VARS
 
   const isDev = (window.location.search == '?dev');
+  if (isDev) {
+    $('.devMode').show()
+  }
 
   var video = document.getElementById("video");
   var useMedia = false;
@@ -11,56 +14,56 @@
   // INIT CAMERA
 
   function initCamera() {
-     function setUseMedia() {
-        useMedia = true;
-        $('.cameraStuff').hide();
-        $('.mediaStuff').show();
-      }
+   function setUseMedia() {
+      useMedia = true;
+      $('.cameraStuff').hide();
+      $('.mediaStuff').show();
+    }
 
-      // Get access to the camera!
+    // Get access to the camera!
+    try {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        try {
-          navigator.mediaDevices
-            .getUserMedia({
-              video: {
-                width: { min: 900, ideal: 1275 },
-                height: { min: 700, ideal: 1875 },
-                aspectRatio: 4.0 / 6
-              }
-            })
-            .then(function(stream) {
-              video.srcObject = stream;
-              video.play();
-            })
-            .catch((e) => setUseMedia())
-          } catch (err) {
-            setUseMedia()
-          }
+        navigator.mediaDevices
+          .getUserMedia({
+            video: {
+              width: { min: 900, ideal: 1275 },
+              height: { min: 700, ideal: 1875 },
+              aspectRatio: 4.0 / 6
+            }
+          })
+          .then(function(stream) {
+            video.srcObject = stream;
+            video.play();
+          })
+          .catch((e) => setUseMedia())
       } else {
         setUseMedia();
       }
+    } catch (err) {
+        setUseMedia()
+    }
 
-      video.addEventListener( "loadedmetadata", function (e) {
-        const originalDisplayHeight = $(video).height();
-        const originalDisplayWidth = $(video).width();
-        if (video.videoWidth > video.videoHeight) {
-          console.log('wide')
-          const newWidth = originalDisplayHeight / 0.68;
-          const offset = originalDisplayWidth - newWidth;
-          $("#videoDiv")[0].style.width = newWidth + "px";
-          $("#videoDiv")[0].style.height = originalDisplayHeight + "px";
-          video.style.marginLeft = -offset / 2 + "px";
-        } else {
-          console.log('tall')
-          console.log(`originalDisplayWidth: ${originalDisplayWidth}, originalDisplayHeight: ${originalDisplayHeight}`)
-          const newHeight = originalDisplayWidth / 0.68;
-          const offset = originalDisplayHeight - newHeight;
-          console.log(`newHeight: ${newHeight}, offset: ${offset}`)
-          $("#videoDiv")[0].style.height = newHeight + "px";
-          $("#videoDiv")[0].style.width = originalDisplayWidth + "px";
-          video.style.marginTop = -offset / 2 + "px";
-        }
-      })
+    video.addEventListener( "loadedmetadata", function (e) {
+      const originalDisplayHeight = $(video).height();
+      const originalDisplayWidth = $(video).width();
+      if (video.videoWidth > video.videoHeight) {
+        console.log('wide')
+        const newWidth = originalDisplayHeight / 0.68;
+        const offset = originalDisplayWidth - newWidth;
+        $("#videoDiv")[0].style.width = newWidth + "px";
+        $("#videoDiv")[0].style.height = originalDisplayHeight + "px";
+        video.style.marginLeft = -offset / 2 + "px";
+      } else {
+        console.log('tall')
+        console.log(`originalDisplayWidth: ${originalDisplayWidth}, originalDisplayHeight: ${originalDisplayHeight}`)
+        const newHeight = originalDisplayWidth / 0.68;
+        const offset = originalDisplayHeight - newHeight;
+        console.log(`newHeight: ${newHeight}, offset: ${offset}`)
+        $("#videoDiv")[0].style.height = newHeight + "px";
+        $("#videoDiv")[0].style.width = originalDisplayWidth + "px";
+        video.style.marginTop = -offset / 2 + "px";
+      }
+    })
   }
 
   function initDropdowns() {
@@ -150,7 +153,8 @@
 
     function error_callback(data, textStatus, errorThrown) {
       $('.beforeResponse').hide();
-      $('.afterResponse.error').show()
+      $('.afterResponse.error').show();
+      $('#savedMessage').html($('#message'));
       if (data.responseJSON) {
         $("#error").html(data.responseJSON.err._response.body.error.message);
       } else {
@@ -236,7 +240,7 @@
         check = false;
       }
 
-      if ($(message).val().length > 700) {
+      if ($(message).val().length > 500) {
         showValidate(message);
         check = false;
       }

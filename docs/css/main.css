@@ -588,8 +588,12 @@ textarea.input100 {
   margin-bottom: 15px;
 }
 
-.beforeResponse, .afterResponse, .afterSubmit, .whileTaking, .mediaStuff, .afterUpload {
+.beforeResponse, .afterResponse, .afterSubmit, .whileTaking, .mediaStuff, .afterUpload, .devMode {
   display:none;
+}
+
+.devMode {
+  color: red;
 }
 
 .afterResponse {
