@@ -216,7 +216,7 @@
 
     /*==================================================================
       [ Validate ]*/
-    var text_max = 700;
+    var text_max = 500;
     $("#count_message").html("0 / " + text_max);
 
     $("#message").keyup(function() {
