@@ -35,14 +35,13 @@
 
     // Get access to the camera!
     try {
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && query['file'] == null) {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && query['file'] == null && query['file]'] == null) {
         navigator.mediaDevices
           .getUserMedia({
             video: {
-              width: { min: 900, ideal: 1275 },
-              height: { min: 700, ideal: 1875 },
-              aspectRatio: 4.0 / 6
-            }
+              width: { min: 100 },
+              height: { min: 100 }
+             }
           })
           .then(function(stream) {
             video.srcObject = stream;
@@ -53,7 +52,7 @@
         setUseMedia();
       }
     } catch (err) {
-        setUseMedia()
+      setUseMedia()
     }
 
     video.addEventListener( "loadedmetadata", function (e) {
@@ -112,10 +111,12 @@
     function getBase64(file) {
       console.log('get base 64')
        var reader = new FileReader();
-       reader.readAsDataURL(file);
-       reader.onload = function () {
+       reader.onload = function (e) {
           var image = document.createElement("img")
-          image.src = reader.result;
+          image.src = e.target.result;
+          // $('#myImage').attr('src', e.target.result);
+          // $('#myImage').show()
+          // $('.afterUpload').show();
           $(image).on('load', () => {
             scaleFromSource(
               image, image.width, image.height,
@@ -125,6 +126,7 @@
        reader.onerror = function (error) {
          console.log('Error: ', error);
        };
+       reader.readAsDataURL(file);
     }
 
 
@@ -143,8 +145,12 @@
     });
 
     document.getElementById("reupload").addEventListener("click", function() {
-      $(".afterUpload").hide();
-      $(".beforeTaken.mediaStuff").show();
+      if (useMedia) {
+        $('#uploadFileInput').click();
+      } else {
+        $(".afterUpload").hide();
+        $(".beforeTaken.mediaStuff").show();
+      }
     });
 
     document.getElementById("snap").addEventListener("click", take_photo);
@@ -291,6 +297,7 @@
     $('.whileTaking').show();
 
     var canvas = document.createElement("canvas")
+    // $('#imageCenter').append(canvas)
     var offscreenCanvas = false;
     if (canvas.transferControlToOffscreen != null) {
       offscreenCanvas = true;
@@ -311,7 +318,7 @@
       canvas.height = initialHeight * scaleFactor;
       console.log(`scaling portrait image to ${canvas.width} x ${canvas.height}`)
 
-      canvas.getContext("2d", { alpha: false }).drawImage(
+      canvas.getContext("2d", { alpha: true }).drawImage(
         src,
         offset / 2, // crop/offset
         0, // Start at 10 pixels from the left and the top of the image (crop),
@@ -334,8 +341,8 @@
       canvas.width = initialWidth * scaleFactor;
       console.log(`scaling portrait image to ${canvas.width} x ${canvas.height}`)
 
-      canvas.getContext("2d", { alpha: false }).drawImage(
-        video,
+      canvas.getContext("2d", { alpha: true }).drawImage(
+        src,
         0, // Start at 10 pixels from the left and the top of the image (crop),
         offset / 2, // crop/offset
         initialWidth, // "Get" a (w * h) area from the source image (crop),
