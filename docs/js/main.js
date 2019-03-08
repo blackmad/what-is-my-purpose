@@ -19,6 +19,8 @@
   const isDev = query['dev'] != null;
   if (isDev) {
     $('.devMode').show();
+  } else {
+    Sentry.init({ dsn: 'https://2981797acaa34bc9a08164cd1e86a1e5@sentry.io/1406004' });
   }
 
   var video = document.getElementById("video");
@@ -137,7 +139,9 @@
 
   function initHandlers() {
     $('#uploadFileInput').change(upload_file)
-    $('div#uploadFile').click((e) => $('uploadFileInput').trigger())
+    //$('#uploadFileDiv').click(() => { $('#uploadFileInput').trigger()})
+   $('#uploadFileButton').click((e) => { $('#uploadFileInput').click()})
+    //$('div#uploadFile').click((e) => { debugger; $('uploadFileInput').trigger()})
 
     document.getElementById("retake").addEventListener("click", function() {
       $(".afterTaken").hide();
@@ -306,54 +310,62 @@
 
     console.log(`initial res: ${initialWidth} x ${initialHeight}`);
 
+    var widthFromOriginalToTake = 0;
+    var heightFromOriginalToTake = 0;
+    var cropHeight = 0;
+    var cropWidth = 0;
     if (initialWidth > initialHeight) {
-      // widescreen
-      const width = Math.ceil(initialHeight / 0.68);
-      const offset = initialWidth - width;
+      // wide / landscape
+      cropHeight = 1275;
+      cropWidth = 1875;
 
-      var scaleFactor = 1
-      scaleFactor = (1875 / width)*1.02
-
-      canvas.width = width * scaleFactor;
-      canvas.height = initialHeight * scaleFactor;
-      console.log(`scaling portrait image to ${canvas.width} x ${canvas.height}`)
-
-      canvas.getContext("2d", { alpha: true }).drawImage(
-        src,
-        offset / 2, // crop/offset
-        0, // Start at 10 pixels from the left and the top of the image (crop),
-        width, // "Get" a (w * h) area from the source image (crop),
-        initialHeight, // area
-        0,
-        0, // Place the result at 0, 0 in the canvas,
-        canvas.width,
-        canvas.height
-      ); // With as width / height: 160 * 60 (scale)
-      console.log('cropped wide image')
+      heightFromOriginalToTake = initialHeight;
+      widthFromOriginalToTake = initialHeight / 0.68;
+      if (widthFromOriginalToTake > initialWidth) {
+        console.log('that would give black bars, so switching')
+        widthFromOriginalToTake = initialWidth;
+        heightFromOriginalToTake = initialWidth * 0.68;
+      }
     } else {
-      const height = Math.ceil(initialWidth / 0.68);
-      const offset = initialHeight - height;
+      // portrait / tall
+      cropWidth = 1275;
+      cropHeight = 1875;
 
-      var scaleFactor = 1
-      scaleFactor = (1875 / height)*1.02;
-
-      canvas.height = height * scaleFactor;
-      canvas.width = initialWidth * scaleFactor;
-      console.log(`scaling portrait image to ${canvas.width} x ${canvas.height}`)
-
-      canvas.getContext("2d", { alpha: true }).drawImage(
-        src,
-        0, // Start at 10 pixels from the left and the top of the image (crop),
-        offset / 2, // crop/offset
-        initialWidth, // "Get" a (w * h) area from the source image (crop),
-        height, // area
-        0, // Place the result at 0, 0 in the canvas,
-        0,
-        canvas.width,
-        canvas.height
-      ); // With as width / height: 160 * 60 (scale)
-      console.log('cropped portrait image')
+      // we need to take a chunk of the original image that has an aspect ratio of 0.68
+      // so we use the width which is the more constrained dimension to do our calculations
+      widthFromOriginalToTake = initialWidth;
+      heightFromOriginalToTake = initialWidth / 0.68;
+      if (heightFromOriginalToTake > initialHeight) {
+        console.log('that would give black bars, so switching')
+        heightFromOriginalToTake = initialHeight;
+        widthFromOriginalToTake = initialHeight * 0.68;
+      }
     }
+
+    // and we need x and y offsets for that
+    const widthOffset = (initialWidth - widthFromOriginalToTake) / 2
+    const heightOffset = (initialHeight - heightFromOriginalToTake) / 2
+
+
+
+    console.log(`cropping to ${cropWidth} x ${cropHeight}`)
+    console.log(`from original taking ${widthFromOriginalToTake} x ${heightFromOriginalToTake}`)
+    console.log(`at offset ${widthOffset}, ${heightOffset}`)
+
+    canvas.width = cropWidth;
+    canvas.height = cropHeight;
+
+    canvas.getContext("2d", { alpha: true }).drawImage(
+      src,
+      // start at this offset
+      widthOffset, heightOffset,
+      // take this much of the image
+      widthFromOriginalToTake, heightFromOriginalToTake,
+      // place it at 0, 0 in the canvas
+      0, 0,
+      // scaling to the size of the canvas (same as how much we're taking)
+      canvas.width, canvas.height
+    )
 
     var image = document.getElementById("myImage");
 
