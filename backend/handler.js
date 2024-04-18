@@ -41,7 +41,7 @@ module.exports.sendCard = (event, context, callback) => {
     const front = 'https://s3.amazonaws.com/purpose-store/' + key;
 
     var back = 'tmpl_f0fafc696ebcbc9';
-    if (process.env.ENV == 'prod') {
+    if (process.env.ENV == 'production') {
       back = 'tmpl_ce36d157166293d';
     }
 
