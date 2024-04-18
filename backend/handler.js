@@ -54,11 +54,11 @@ module.exports.sendCard = (event, context, callback) => {
       description: 'Demo Postcard job',
       to: {
         name: 'David Blackman',
-        address_line1: '52 Ten Eyck St',
-        address_line2: 'Apt 3B',
-        address_city: 'Brooklyn',
-        address_state: 'NY',
-        address_zip: '11206'
+        address_line1: '251 Vierwindenstraat',
+        address_city: 'Amsterdam',
+        address_state: 'North Holland',
+        address_zip: '1013cw',
+        address_country: "NETHERLANDS"
       },
       from: null,
       back: back,

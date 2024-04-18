@@ -187,7 +187,7 @@
 
     const postUrl = isDev ?
       "https://jjt53ry4fg.execute-api.us-east-1.amazonaws.com/dev/sendCard" :
-      "https://rmzrok1de3.execute-api.us-east-1.amazonaws.com/prod/sendCard";
+      "https://r5rta6c2ih.execute-api.us-east-1.amazonaws.com/production/sendCard";
 
     $.ajax({
       type: "POST",

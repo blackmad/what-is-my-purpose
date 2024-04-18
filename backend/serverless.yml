@@ -9,22 +9,22 @@ service: serverless-hello-world
 
 plugins:
   - serverless-offline
-  - serverless-sentry
+  # - serverless-sentry
 
 custom:
   bucket: purpose-store
-  sentry:
-    dsn: https://2981797acaa34bc9a08164cd1e86a1e5@sentry.io/1406004
+  # sentry:
+  #   dsn: https://2981797acaa34bc9a08164cd1e86a1e5@sentry.io/1406004
 
 # The `provider` block defines where your service will be deployed
 provider:
   name: aws
-  runtime: nodejs6.10
+  runtime: nodejs18.x
   region: us-east-1
   stage: ${opt:stage, 'dev'}
   timeout: 15 # optional, in seconds, default is 6
   environment:
-    LOB_API_KEY: ${file(../../../.auth/lob.json):${self:provider.stage}.key}
+    LOB_API_KEY: ${env:LOB_API_KEY}_${opt:stage, 'development'}
   iamRoleStatements:
     - Effect: Allow
       Action:
