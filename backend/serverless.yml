@@ -24,7 +24,7 @@ provider:
   stage: ${opt:stage, 'dev'}
   timeout: 15 # optional, in seconds, default is 6
   environment:
-    LOB_API_KEY: ${env:LOB_API_KEY}_${opt:stage, 'development'}
+    LOB_API_KEY: ${env:LOB_API_KEY_${opt:stage, 'dev'}}
   iamRoleStatements:
     - Effect: Allow
       Action:

@@ -11,6 +11,6 @@
     "raven": "^2.6.4"
   },
   "devDependencies": {
-    "serverless-offline": "^4.7.1"
+    "serverless-offline": "^13.3.3"
   }
 }

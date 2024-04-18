@@ -1,8 +1,5 @@
 'use strict';
 
-const Raven = require("raven"); // Official `raven` module
-const RavenLambdaWrapper = require("serverless-sentry-lib"); // This helper library
-
 const fetch = require('node-fetch');
 const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-dependencies
 
@@ -42,15 +39,13 @@ module.exports.sendCard = (event, context, callback) => {
 
   function uploadCard() {
     const front = 'https://s3.amazonaws.com/purpose-store/' + key;
-    console.log(front);
 
     var back = 'tmpl_f0fafc696ebcbc9';
-    console.log(process.env.ENV)
     if (process.env.ENV == 'prod') {
       back = 'tmpl_ce36d157166293d';
     }
 
-    Lob.postcards.create({
+    const args = {
       description: 'Demo Postcard job',
       to: {
         name: 'David Blackman',
@@ -58,9 +53,16 @@ module.exports.sendCard = (event, context, callback) => {
         address_city: 'Amsterdam',
         address_state: 'North Holland',
         address_zip: '1013cw',
-        address_country: "NETHERLANDS"
+        address_country: "NL"
       },
-      from: null,
+      from: {
+        name: 'David Blackman',
+        address_line1: '52 ten eyck st',
+        address_city: 'brooklyn',
+        address_state: 'ny',
+        address_zip: '11206',
+        address_country: "US"
+      },
       back: back,
       front: front,
       merge_variables: {
@@ -71,7 +73,9 @@ module.exports.sendCard = (event, context, callback) => {
         message: params.message.replace('\n', '<br>'),
 
       }
-    }, function (err, res) {
+    }
+
+    Lob.postcards.create(args, function (err, res) {
       sendResponse(err, res)
     });
   }

@@ -185,9 +185,13 @@
       }
     }
 
-    const postUrl = isDev ?
+    const isLocalhost = window.location.hostname === "localhost"  || window.location.hostname === '[::]' || window.location.hostname === '127.0.0.1'
+
+    const postUrl = isLocalhost ? "http://localhost:3000/dev/sendCard" : isDev ?
       "https://jjt53ry4fg.execute-api.us-east-1.amazonaws.com/dev/sendCard" :
       "https://r5rta6c2ih.execute-api.us-east-1.amazonaws.com/production/sendCard";
+
+    console.log("using", window.location.hostname, {isLocalhost, postUrl})
 
     $.ajax({
       type: "POST",
