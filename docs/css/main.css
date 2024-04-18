@@ -365,7 +365,7 @@ textarea.input100 {
 
 
   div.camera {
-    margin-left: -17px !important;
+    /* margin-left: -17px !important; */
   }
 }
 
@@ -620,7 +620,7 @@ textarea.input100 {
 }
 
 div.camera {
-  margin-left: -65px;
+  /* margin-left: -65px; */
 }
 
 .upload-btn-wrapper {

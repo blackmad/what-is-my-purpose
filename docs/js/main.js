@@ -38,6 +38,7 @@
     // Get access to the camera!
     try {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && query['file'] == null && query['file]'] == null) {
+        console.log("trying to get media")
         navigator.mediaDevices
           .getUserMedia({
             video: {
@@ -46,6 +47,8 @@
              }
           })
           .then(function(stream) {
+            console.log("setting style to block")
+            $('#videoDivOverlay').hide();
             video.srcObject = stream;
             video.play();
           })
@@ -54,10 +57,12 @@
         setUseMedia();
       }
     } catch (err) {
+      console.log("err?", err)
       setUseMedia()
     }
 
     video.addEventListener( "loadedmetadata", function (e) {
+      console.log("?")
       const originalDisplayHeight = $(video).height();
       const originalDisplayWidth = $(video).width();
       if (video.videoWidth > video.videoHeight) {
@@ -400,6 +405,7 @@
       () => $(".afterTaken").show())
   }
 
+  console.log("init camera?")
   initCamera()
   initDropdowns()
   initValidators()
